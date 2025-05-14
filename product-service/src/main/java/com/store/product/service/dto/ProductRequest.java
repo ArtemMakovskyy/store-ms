@@ -6,12 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductRequest {
+    @NotBlank(message = "Product name cannot be empty")
     private String name;
+
+    @NotBlank(message = "Product description cannot be empty")
     private String description;
+
+    @Positive(message = "Price must be greater than zero")
     private BigDecimal price;
 }
