@@ -1,1 +1,8 @@
 /postgres-order/
+/order-service/mvnw.cmd
+/order-service/mvnw
+/order-service/.gitignore
+/order-service/.gitattributes
+/order-service/.idea/
+/order-service/.mvn/
+/postgres-product/
