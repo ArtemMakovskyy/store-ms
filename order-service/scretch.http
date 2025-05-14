@@ -1,0 +1,13 @@
+### creating order
+POST http://localhost:8081/api/order
+Content-Type: application/json
+
+{
+  "orderLineItemsDtoList": [
+    {
+      "skuCode": "Classic guitar YAMAHA C72",
+      "price": 10200,
+      "quantity": 1
+    }
+  ]
+}
