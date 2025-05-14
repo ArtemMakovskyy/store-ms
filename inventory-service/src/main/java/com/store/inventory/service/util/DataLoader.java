@@ -10,17 +10,20 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
     private final InventoryRepository inventoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        Inventory classic = new Inventory();
-        classic.setSkuCode("classic_guitar");
-        classic.setQuantity(100);
+        if (inventoryRepository.count() < 1) {
+            Inventory classic = new Inventory();
+            classic.setSkuCode("classic_guitar");
+            classic.setQuantity(100);
 
-        Inventory instrumental = new Inventory();
-        instrumental.setSkuCode("instrumental_guitar");
-        instrumental.setQuantity(0);
+            Inventory instrumental = new Inventory();
+            instrumental.setSkuCode("instrumental_guitar");
+            instrumental.setQuantity(0);
 
-        inventoryRepository.save(classic);
-        inventoryRepository.save(instrumental);
+            inventoryRepository.save(classic);
+            inventoryRepository.save(instrumental);
+        }
     }
 }

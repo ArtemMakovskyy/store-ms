@@ -11,3 +11,7 @@
 /inventory-service/.gitattributes
 /inventory-service/.mvn/
 /postgres-inventory/
+/discovery-service/mvnw.cmd
+/discovery-service/mvnw
+/discovery-service/.gitattributes
+/discovery-service/.mvn/
