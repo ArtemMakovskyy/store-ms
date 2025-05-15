@@ -5,9 +5,46 @@ Content-Type: application/json
 {
   "orderLineItemsDtoList": [
     {
-      "skuCode": "Classic guitar YAMAHA C72",
-      "price": 10200,
+      "skuCode": "Classic guitar YAMAHA C72_1",
+      "price": 10201,
       "quantity": 1
+    }
+  ]
+}
+
+### creating order2
+POST http://localhost:8081/api/order
+Content-Type: application/json
+
+{
+  "orderLineItemsDtoList": [
+    {
+      "id": 1,
+      "skuCode": "classic_guitar",
+      "price": 100.50,
+      "quantity": 1
+    }
+  ]
+}
+
+### creating order3
+POST http://localhost:8081/api/order
+Content-Type: application/json
+
+{
+  "orderLineItemsDtoList": [
+    {
+      "id": 1,
+      "skuCode": "classic_guitar",
+      "price": 100.50,
+      "quantity": 2
+    }
+  ,
+    {
+      "id": 2,
+      "skuCode": "instrumental_guitar",
+      "price": 200.75,
+      "quantity": 0
     }
   ]
 }

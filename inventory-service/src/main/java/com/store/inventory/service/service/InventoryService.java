@@ -19,6 +19,7 @@ public class InventoryService {
     @Transactional(readOnly = true)
     @SneakyThrows
     public List<InventoryResponse> isInStock(List<String> skuCode) {
+        //todo fixed name
         log.info("Checking Inventory");
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
                 .map(inventory ->
