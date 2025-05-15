@@ -15,3 +15,8 @@
 /discovery-service/mvnw
 /discovery-service/.gitattributes
 /discovery-service/.mvn/
+/api-gateway/mvnw.cmd
+/api-gateway/mvnw
+/api-gateway/.gitattributes
+/api-gateway/.mvn/
+/api-gateway/.idea/
