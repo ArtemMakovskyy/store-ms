@@ -54,14 +54,12 @@ class ProductControllerTest {
     private ProductService productService;
     @Mock
     ProductRepository productRepository;
+
     @Test
     @DisplayName("Create a new product successfully")
     void createProduct_ValidRequest_ReturnsCreatedStatus() throws Exception {
-        ProductRequest productRequest = ProductRequest.builder()
-                .name(PRODUCT_NAME)
-                .description(PRODUCT_DESCRIPTION)
-                .price(PRODUCT_PRICE)
-                .build();
+        ProductRequest productRequest
+                = new ProductRequest(PRODUCT_NAME, PRODUCT_DESCRIPTION, PRODUCT_PRICE);
 
         doNothing().when(productService).createProduct(any(ProductRequest.class));
 
@@ -74,12 +72,8 @@ class ProductControllerTest {
     @Test
     @DisplayName("Create product with invalid request returns bad request")
     void createProduct_InvalidRequest_ReturnsBadRequest() throws Exception {
-        ProductRequest invalidProductRequest = ProductRequest.builder()
-                .name("")
-                .description(PRODUCT_DESCRIPTION)
-                .price(PRODUCT_PRICE)
-                .build();
-
+        ProductRequest invalidProductRequest
+                = new ProductRequest("", PRODUCT_DESCRIPTION, PRODUCT_PRICE);
         mockMvc.perform(post(API_URL)
                         .contentType(JSON_CONTENT_TYPE)
                         .content(objectMapper.writeValueAsString(invalidProductRequest)))

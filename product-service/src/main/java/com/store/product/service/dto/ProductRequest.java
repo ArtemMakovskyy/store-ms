@@ -13,15 +13,18 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Data
-@Builder
-public class ProductRequest {
-    @NotBlank(message = "Product name cannot be empty")
-    private String name;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
 
-    @NotBlank(message = "Product description cannot be empty")
-    private String description;
+public record ProductRequest(
+        @NotBlank(message = "Product name cannot be empty")
+        String name,
 
-    @Positive(message = "Price must be greater than zero")
-    private BigDecimal price;
+        @NotBlank(message = "Product description cannot be empty")
+        String description,
+
+        @Positive(message = "Price must be greater than zero")
+        BigDecimal price
+) {
 }
