@@ -1,18 +1,18 @@
-### creating order
+### creating order not in stock
 POST http://localhost:8080/api/order
 Content-Type: application/json
 
 {
   "orderLineItemsDtoList": [
     {
-      "skuCode": "Classic guitar YAMAHA C72_1",
-      "price": 10201,
+      "skuCode": "Classic guitar YAMAHA C72",
+      "price": 10203,
       "quantity": 1
     }
   ]
 }
 
-### creating order2
+### creating order in stock
 POST http://localhost:8080/api/order
 Content-Type: application/json
 
