@@ -11,16 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
     @Transactional(readOnly = true)
-    @SneakyThrows
     public List<InventoryResponse> isInStock(List<String> skuCode) {
-        //todo fixed name
-        log.info("Checking Inventory");
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
                 .map(inventory ->
                         InventoryResponse.builder()

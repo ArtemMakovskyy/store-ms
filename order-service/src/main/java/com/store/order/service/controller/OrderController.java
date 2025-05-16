@@ -17,20 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
-@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
 
     @PostMapping
     @CircuitBreaker(name = "inventory", fallbackMethod = "placeOrderFallbackMethod")
-    public ResponseEntity<String> placeOrder(@RequestBody OrderRequest orderRequest) {
-        return ResponseEntity.ok(orderService.placeOrder(orderRequest));
+    @TimeLimiter(name = "inventory")
+    @Retry(name = "inventory")
+    public CompletableFuture<ResponseEntity<String>> placeOrder(@RequestBody OrderRequest orderRequest) {
+        return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest))
+                .thenApply(ResponseEntity::ok);
     }
 
-    public ResponseEntity<String> placeOrderFallbackMethod(
+
+    public CompletableFuture<ResponseEntity<String>> placeOrderFallbackMethod(
             OrderRequest orderRequest, Throwable throwable) {
-        log.error("Cannot Place Order, executing fallback logic", throwable);
-        return ResponseEntity.badRequest().body("Cannot place order, please try again later.");
+        return CompletableFuture.supplyAsync(
+                () -> "Cannot place order, please try again later.").thenApply(ResponseEntity::ok);
     }
 }

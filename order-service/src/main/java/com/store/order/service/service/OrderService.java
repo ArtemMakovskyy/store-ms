@@ -25,17 +25,13 @@ public class OrderService {
     private final InventoryClient inventoryClient;
 
     public String placeOrder(OrderRequest orderRequest) {
-        //todo remove excess
-        log.info("orderRequest\n" + orderRequest);
         Order order = createOrder(orderRequest);
-        log.info("order\n" + order);
         List<String> skuCodesFromOrderLineItems = order.getOrderLineItemsList().stream()
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
         List<InventoryResponse> inventoryResponses
                 = inventoryClient.inventoriesResponseBySkuCodes(skuCodesFromOrderLineItems);
-        log.info("inventoryResponses\n" + inventoryResponses);
         if (areAllSkuCodesInStock(inventoryResponses, skuCodesFromOrderLineItems)) {
             orderRepository.save(order);
             //todo subtract quantity from warehouse if successful
