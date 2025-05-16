@@ -1,8 +1,9 @@
-version: "3.9"
+version: '3.9'
 services:
+
   postgres-product:
     container_name: postgres-product-db
-    image: postgres
+    image: postgres:17
     environment:
       POSTGRES_DB: product-db
       POSTGRES_USER: userName
@@ -13,7 +14,7 @@ services:
     ports:
       - "5431:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U userName -d product-db" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -22,7 +23,7 @@ services:
 
   postgres-order:
     container_name: postgres-order-db
-    image: postgres
+    image: postgres:17
     environment:
       POSTGRES_DB: order-db
       POSTGRES_USER: userName
@@ -33,7 +34,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U userName -d order-db" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -42,7 +43,7 @@ services:
 
   postgres-inventory:
     container_name: postgres-inventory-db
-    image: postgres
+    image: postgres:17
     environment:
       POSTGRES_DB: inventory-db
       POSTGRES_USER: userName
@@ -53,9 +54,43 @@ services:
     ports:
       - "5433:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U userName -d inventory-db" ]
       interval: 30s
       timeout: 30s
       retries: 5
       start_period: 10s
     restart: always
+
+  mongodb:
+    image: mongo:7.0.5
+    container_name: mongo-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: userName
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: user-db
+    volumes:
+      - ./data:/data/db
+
+  mysql-user:
+    container_name: mysql-user-db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: user-db
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./mysql-user:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+

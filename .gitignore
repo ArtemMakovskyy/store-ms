@@ -1,4 +1,6 @@
 /postgres-order/
+/mysql-user/
+/data/
 /order-service/mvnw.cmd
 /order-service/mvnw
 /order-service/.gitignore
