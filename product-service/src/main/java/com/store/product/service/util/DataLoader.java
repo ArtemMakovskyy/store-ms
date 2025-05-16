@@ -15,13 +15,13 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (productRepository.count() < 1) {
-            Product product = new Product();
-            product.setName("Classical guitar ADMIRA A20");
-            product.setDescription("Enrique Keller SA factory, located in the northern part of Spain.");
-            product.setPrice(BigDecimal.valueOf(54156));
-
-            productRepository.save(product);
-        }
+//        if (productRepository.count() < 1) {
+//            Product product = new Product();
+//            product.setName("Classical guitar ADMIRA A20");
+//            product.setDescription("Enrique Keller SA factory, located in the northern part of Spain.");
+//            product.setPrice(BigDecimal.valueOf(54156));
+//
+//            productRepository.save(product);
+//        }
     }
 }
