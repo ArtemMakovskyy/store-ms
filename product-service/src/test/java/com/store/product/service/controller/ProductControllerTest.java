@@ -20,7 +20,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class ProductControllerTest {
 
     @Container
-    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:17")
+    static PostgreSQLContainer<?> postgresContainer
+            = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("productdb")
             .withUsername("user")
             .withPassword("password");
