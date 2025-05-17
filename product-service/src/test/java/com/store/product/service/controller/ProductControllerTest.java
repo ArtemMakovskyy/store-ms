@@ -19,12 +19,25 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductControllerTest {
 
+    private static final String POSTGRES_IMAGE = "postgres:17";
+    private static final String DATABASE_NAME = "productdb";
+    private static final String DATABASE_USERNAME = "user";
+    private static final String DATABASE_PASSWORD = "password";
+
+    private static final String BASE_PATH = "/api/product";
+    private static final String CONTENT_TYPE_JSON = "application/json";
+
+    private static final String TEST_PRODUCT_NAME = "Guitar classic";
+    private static final String TEST_PRODUCT_DESCRIPTION = "Guitar classic";
+    private static final BigDecimal TEST_PRODUCT_PRICE = BigDecimal.valueOf(1200);
+    private static final float TEST_PRODUCT_PRICE_FLOAT = 1200.0F;
+
     @Container
     static PostgreSQLContainer<?> postgresContainer
-            = new PostgreSQLContainer<>("postgres:17")
-            .withDatabaseName("productdb")
-            .withUsername("user")
-            .withPassword("password");
+            = new PostgreSQLContainer<>(POSTGRES_IMAGE)
+            .withDatabaseName(DATABASE_NAME)
+            .withUsername(DATABASE_USERNAME)
+            .withPassword(DATABASE_PASSWORD);
 
     @LocalServerPort
     private int port;
@@ -45,40 +58,30 @@ class ProductControllerTest {
     @Test
     @DisplayName("add valid ProductRequest Return 201 Created")
     void add_validProductRequest_Return201Created() {
-        ProductRequest productRequest = new ProductRequest("Guitar classic", "Guitar classic", BigDecimal.valueOf(1200));
+        ProductRequest productRequest = new ProductRequest(TEST_PRODUCT_NAME, TEST_PRODUCT_DESCRIPTION, TEST_PRODUCT_PRICE);
 
-        // given
         RestAssured.given()
-                .contentType("application/json")
+                .contentType(CONTENT_TYPE_JSON)
                 .body(productRequest)
-
-                // when
                 .when()
-                .post("/api/product")
-
-                // then
+                .post(BASE_PATH)
                 .then()
                 .log().all()
                 .statusCode(201);
     }
 
     @Test
-    @DisplayName("get all Products Returns Produc tList")
+    @DisplayName("get all Products Returns ProductList")
     void get_allProducts_ReturnsProductList() {
-        // given
         RestAssured.given()
-                .contentType("application/json")
-
-                // when
+                .contentType(CONTENT_TYPE_JSON)
                 .when()
-                .get("/api/product")
-
-                // then
+                .get(BASE_PATH)
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("[0].name", Matchers.equalTo("Guitar classic"))
-                .body("[0].description", Matchers.equalTo("Guitar classic"))
-                .body("[0].price", Matchers.equalTo(1200.0F));
+                .body("[0].name", Matchers.equalTo(TEST_PRODUCT_NAME))
+                .body("[0].description", Matchers.equalTo(TEST_PRODUCT_DESCRIPTION))
+                .body("[0].price", Matchers.equalTo(TEST_PRODUCT_PRICE_FLOAT));
     }
 }

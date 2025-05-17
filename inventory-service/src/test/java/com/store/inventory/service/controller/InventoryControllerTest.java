@@ -19,12 +19,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class InventoryControllerTest {
 
+    private static final String POSTGRES_IMAGE = "postgres:17";
+    private static final String DATABASE_NAME = "inventorydb";
+    private static final String DATABASE_USERNAME = "user";
+    private static final String DATABASE_PASSWORD = "password";
+
+    private static final String BASE_URI = "http://localhost";
+    private static final String API_PATH = "/api/inventory";
+    private static final String SKU_CODE = "iphone_15";
+
+    private static final int QUANTITY_AVAILABLE = 1;
+    private static final int QUANTITY_NOT_AVAILABLE = 1000;
+
     @Container
     static PostgreSQLContainer<?> postgresContainer
-            = new PostgreSQLContainer<>("postgres:17")
-            .withDatabaseName("inventorydb")
-            .withUsername("user")
-            .withPassword("password");
+            = new PostgreSQLContainer<>(POSTGRES_IMAGE)
+            .withDatabaseName(DATABASE_NAME)
+            .withUsername(DATABASE_USERNAME)
+            .withPassword(DATABASE_PASSWORD);
 
     @LocalServerPort
     private int port;
@@ -38,7 +50,7 @@ class InventoryControllerTest {
 
     @BeforeEach
     void setup() {
-        RestAssured.baseURI = "http://localhost";
+        RestAssured.baseURI = BASE_URI;
         RestAssured.port = port;
     }
 
@@ -47,7 +59,7 @@ class InventoryControllerTest {
     void get_inventoryBySkuAndQuantity_ReturnsTrueIfAvailable() {
         var response = RestAssured.given()
                 .when()
-                .get("/api/inventory?skuCode=iphone_15&quantity=1")
+                .get(API_PATH + "?skuCode=" + SKU_CODE + "&quantity=" + QUANTITY_AVAILABLE)
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -60,12 +72,11 @@ class InventoryControllerTest {
     void get_inventoryBySkuAndQuantity_ReturnsFalseIfNotAvailable() {
         var response = RestAssured.given()
                 .when()
-                .get("/api/inventory?skuCode=iphone_15&quantity=1000")
+                .get(API_PATH + "?skuCode=" + SKU_CODE + "&quantity=" + QUANTITY_NOT_AVAILABLE)
                 .then()
                 .log().all()
                 .statusCode(200)
                 .extract().response().as(Boolean.class);
         assertFalse(response);
     }
-
 }

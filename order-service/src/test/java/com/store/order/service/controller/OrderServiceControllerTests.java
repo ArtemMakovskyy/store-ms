@@ -17,14 +17,37 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class OrderControllerTest {
+class OrderServiceControllerTests {
+
+    private static final String MYSQL_IMAGE = "mysql:8.3.0";
+    private static final String DATABASE_NAME = "testdb";
+    private static final String DATABASE_USERNAME = "user";
+    private static final String DATABASE_PASSWORD = "password";
+
+    private static final String BASE_URI = "http://localhost";
+    private static final String API_PATH = "/api/order";
+    private static final String CONTENT_TYPE_JSON = "application/json";
+
+    private static final String ORDER_SKU_CODE = "iphone_15";
+    private static final int ORDER_PRICE = 1000;
+    private static final int ORDER_QUANTITY = 1;
+
+    private static final String EXPECTED_RESPONSE = "Order Placed Successfully";
+
+    private static final String SUBMIT_ORDER_JSON = """
+        {
+            "skuCode": "%s",
+            "price": %d,
+            "quantity": %d
+        }
+        """.formatted(ORDER_SKU_CODE, ORDER_PRICE, ORDER_QUANTITY);
 
     @Container
     static MySQLContainer<?> mySQLContainer =
-            new MySQLContainer<>("mysql:8.3.0")
-                    .withDatabaseName("testdb")
-                    .withUsername("user")
-                    .withPassword("password");
+            new MySQLContainer<>(MYSQL_IMAGE)
+                    .withDatabaseName(DATABASE_NAME)
+                    .withUsername(DATABASE_USERNAME)
+                    .withPassword(DATABASE_PASSWORD);
 
     @LocalServerPort
     private int port;
@@ -38,26 +61,19 @@ class OrderControllerTest {
 
     @BeforeEach
     void setUpRestAssured() {
-        RestAssured.baseURI = "http://localhost";
+        RestAssured.baseURI = BASE_URI;
         RestAssured.port = port;
     }
 
     @Test
     @DisplayName("Submit order should return 201 and confirmation message")
     void shouldSubmitOrder_Return201AndConfirmationMessage() {
-        String submitOrderJson = """
-                {
-                    "skuCode": "iphone_15",
-                    "price": 1000,
-                    "quantity": 1
-                }
-                """;
 
         var responseBodyString = RestAssured.given()
-                .contentType("application/json")
-                .body(submitOrderJson)
+                .contentType(CONTENT_TYPE_JSON)
+                .body(SUBMIT_ORDER_JSON)
                 .when()
-                .post("/api/order")
+                .post(API_PATH)
                 .then()
                 .log().all()
                 .statusCode(201)
@@ -65,6 +81,6 @@ class OrderControllerTest {
                 .body()
                 .asString();
 
-        assertThat(responseBodyString, is("Order Placed Successfully"));
+        assertThat(responseBodyString, is(EXPECTED_RESPONSE));
     }
 }
