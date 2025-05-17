@@ -42,26 +42,6 @@ services:
       start_period: 10s
     restart: always
 
-  postgres-order:
-    container_name: postgres-order-db
-    image: postgres:17
-    environment:
-      POSTGRES_DB: order-db
-      POSTGRES_USER: userName
-      POSTGRES_PASSWORD: secret
-      PGDATA: /data/postgres
-    volumes:
-      - ./postgres-order:/data/postgres
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U userName -d order-db" ]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-      start_period: 10s
-    restart: always
-
   postgres-inventory:
     container_name: postgres-inventory-db
     image: postgres:17
