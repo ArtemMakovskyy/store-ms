@@ -23,3 +23,8 @@
 /api-gateway/.gitattributes
 /api-gateway/.mvn/
 /api-gateway/.idea/
+/api-gateway-mvc/mvnw.cmd
+/api-gateway-mvc/mvnw
+/api-gateway-mvc/.gitattributes
+/api-gateway-mvc/.mvn/
+/docker/
