@@ -1,0 +1,47 @@
+### POST product1
+POST /api/order HTTP/1.1
+Host: localhost:61968
+Content-Type: application/json
+
+{
+"id": 1,
+"skuCode": "iphone_15",
+"price": 100,
+"quantity": 1
+}
+
+### POST product2
+POST /api/order HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+"id": 2,
+"skuCode": "pixel_8",
+"price": 100,
+"quantity": 1
+}
+
+### POST product3
+POST /api/order HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "id": 3,
+  "skuCode": "galaxy_24",
+  "price": 100,
+  "quantity": 1
+}
+
+### POST product4
+POST /api/order HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "id": 4,
+  "skuCode": "oneplus_12",
+  "price": 100,
+  "quantity": 1
+}
