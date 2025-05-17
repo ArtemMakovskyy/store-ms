@@ -21,6 +21,27 @@ services:
       start_period: 10s
     restart: always
 
+  mysql-order:
+    container_name: mysql-order-db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: order-db
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./mysql-order/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mysql-order/data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
   postgres-order:
     container_name: postgres-order-db
     image: postgres:17
@@ -73,24 +94,3 @@ services:
       MONGO_INITDB_DATABASE: user-db
     volumes:
       - ./data:/data/db
-
-  mysql-user:
-    container_name: mysql-user-db
-    image: mysql:8.3.0
-    environment:
-      MYSQL_DATABASE: user-db
-      MYSQL_USER: userName
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
-    volumes:
-      - ./mysql-user:/var/lib/mysql
-    ports:
-      - "3307:3306"
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-      start_period: 10s
-    restart: always
-
