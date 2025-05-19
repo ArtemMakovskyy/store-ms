@@ -6,7 +6,7 @@ Content-Type: application/json
 {
 "id": 1,
 "skuCode": "iphone_15",
-"price": 100,
+"price": 101,
 "quantity": 1
 }
 
