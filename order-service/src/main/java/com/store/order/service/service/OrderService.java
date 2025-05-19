@@ -1,6 +1,6 @@
 package com.store.order.service.service;
 
-import com.store.order.service.client.InventoryFeignClient;
+import com.store.order.service.client.InventoryRestClient;
 import com.store.order.service.dto.OrderRequest;
 import com.store.order.service.model.Order;
 import com.store.order.service.repository.OrderRepository;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final InventoryFeignClient inventoryClient;
+    private final InventoryRestClient inventoryClient;
 
     public void placeOrder(OrderRequest orderRequest) {
         boolean inStock = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
