@@ -7,10 +7,10 @@ Content-Type: application/json
   "id": 1,
   "orderNumber": "ORD123456",
   "skuCode": "iphone_15",
-  "price": 101,
+  "price": 100,
   "quantity": 1,
   "userDetails": {
-    "email": "example@email.com",
+    "email": "photomak79@gmail.com",
     "firstName": "Artem",
     "lastName": "Ivanov"
   }
