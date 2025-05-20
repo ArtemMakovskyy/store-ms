@@ -1,14 +1,21 @@
-### POST product1
+### POST product1 update
 POST /api/order HTTP/1.1
 Host: localhost:9000
 Content-Type: application/json
 
 {
-"id": 1,
-"skuCode": "iphone_15",
-"price": 101,
-"quantity": 1
+  "id": 1,
+  "orderNumber": "ORD123456",
+  "skuCode": "iphone_15",
+  "price": 101,
+  "quantity": 1,
+  "userDetails": {
+    "email": "example@email.com",
+    "firstName": "Artem",
+    "lastName": "Ivanov"
+  }
 }
+
 
 ### POST product2
 POST /api/order HTTP/1.1

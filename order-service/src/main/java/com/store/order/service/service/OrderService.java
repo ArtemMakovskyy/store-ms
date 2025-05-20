@@ -2,6 +2,7 @@ package com.store.order.service.service;
 
 import com.store.order.service.client.InventoryRestClient;
 import com.store.order.service.dto.OrderRequest;
+import com.store.order.service.event.OrderPlacedEvent;
 import com.store.order.service.model.Order;
 import com.store.order.service.repository.OrderRepository;
 import java.util.UUID;
@@ -22,8 +23,13 @@ public class OrderService {
     public void placeOrder(OrderRequest orderRequest) {
         boolean inStock = inventoryRestClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
         if (inStock) {
-            var order = mapToOrder(orderRequest);
+            Order order = mapToOrder(orderRequest);
             orderRepository.save(order);
+
+            OrderPlacedEvent orderPlacedEvent = new OrderPlacedEvent(
+                    order.getOrderNumber(), orderRequest.userDetails().email());
+            // send to kafka
+
         } else {
             log.error("Product with SKU code {} is not in stock", orderRequest.skuCode());
             throw new RuntimeException("Product with Skucode " + orderRequest.skuCode() + "is not in stock");
