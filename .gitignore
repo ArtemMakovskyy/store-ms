@@ -30,3 +30,7 @@
 /docker/
 /microservices-shop-frontend/
 /ссс/
+/notification-service/mvnw.cmd
+/notification-service/mvnw
+/notification-service/.gitattributes
+/notification-service/.mvn/
