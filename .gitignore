@@ -28,3 +28,5 @@
 /api-gateway-mvc/.gitattributes
 /api-gateway-mvc/.mvn/
 /docker/
+/microservices-shop-frontend/
+/ссс/
