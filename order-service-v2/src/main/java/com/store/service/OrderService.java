@@ -28,15 +28,19 @@ public class OrderService {
             Order order = mapToOrder(orderRequest);
             orderRepository.save(order);
 
-            sendKafkaTopic(order.getOrderNumber(), orderRequest.userDetails().email());
+            sendKafkaTopic(order.getOrderNumber(), orderRequest);
         } else {
             log.error("Product with SKU code {} is not in stock", orderRequest.skuCode());
             throw new RuntimeException("Product with SkuCode " + orderRequest.skuCode() + "is not in stock");
         }
     }
 
-    private void sendKafkaTopic(String orderNumber, String email) {
-        OrderPlacedEvent orderPlacedEvent = new OrderPlacedEvent(orderNumber, email);
+    private void sendKafkaTopic(String orderNumber, OrderRequest orderRequest) {
+        OrderPlacedEvent orderPlacedEvent = new OrderPlacedEvent();
+        orderPlacedEvent.setOrderNumber(orderNumber);
+        orderPlacedEvent.setEmail(orderRequest.userDetails().email());
+        orderPlacedEvent.setFirstName(orderRequest.userDetails().firstName());
+        orderPlacedEvent.setLastName(orderRequest.userDetails().lastName());
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
         kafkaTemplate.send("order-placed", orderPlacedEvent);
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
