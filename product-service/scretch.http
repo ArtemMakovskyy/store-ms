@@ -1,9 +1,9 @@
 ### GET product
-GET http://localhost:8080/api/product
+GET http://localhost:8083/api/product
 Content-Type: application/json
 
 ### creating product
-POST http://localhost:8080/api/product
+POST http://localhost:8083/api/product
 Content-Type: application/json
 
 {
