@@ -1,7 +1,4 @@
-/postgres-order/
-/mysql-order/
-/mysql-user/
-/data/
+/db/
 /order-service/mvnw.cmd
 /order-service/mvnw
 /order-service/.gitignore
@@ -27,8 +24,6 @@
 /api-gateway-mvc/mvnw
 /api-gateway-mvc/.gitattributes
 /api-gateway-mvc/.mvn/
-/docker/
-/microservices-shop-frontend/
 /ссс/
 /notification-service/mvnw.cmd
 /notification-service/mvnw
