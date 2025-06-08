@@ -1,3 +1,8 @@
-### GET product
+### GET product 9000
 GET http://localhost:9000/api/inventory?skuCode=iphone_15&quantity=100
 Content-Type: application/json
+
+### GET product 8083
+GET http://localhost:8083/api/inventory?skuCode=iphone_15&quantity=100
+Content-Type: application/json
+

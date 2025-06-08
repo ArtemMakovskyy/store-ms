@@ -1,5 +1,82 @@
 version: '3.9'
 services:
+  discovery-service:
+    image: artemmakivskyy/discovery-service:latest
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres-product
+      - postgres-inventory
+      - mysql-order
+
+  notification-service:
+    image: artemmakivskyy/notification-service:latest
+    container_name: notification-service
+    ports:
+      - "8084:8084"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_APPLICATION_NAME: notification-service-v2
+      MANAGEMENT_OBSERVATIONS_KEY_VALUES_APPLICATION: notification-service-v2
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:9092
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SCHEMA_REGISTRY_URL: http://schema-registry:8085
+    depends_on:
+      - discovery-service
+      - broker
+      - schema-registry
+
+  order-service:
+    image: artemmakivskyy/order-service:latest
+    container_name: order-service
+    ports:
+      - "8081:8081"
+    environment:
+      #      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-order:3306/order-db?serverTimezone=UTC
+      #      SPRING_DATASOURCE_USERNAME: userName
+      #      SPRING_DATASOURCE_PASSWORD: secret
+      #      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      - mysql-order
+      - discovery-service
+
+  product-service:
+    image: artemmakivskyy/product-service:latest
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-product:5432/product-db?serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: userName
+#      SPRING_DATASOURCE_PASSWORD: secret
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      - postgres-product
+      - discovery-service
+
+  inventory-service:
+    image: artemmakivskyy/inventory-service:latest
+    container_name: inventory-service
+    ports:
+      - "8082:8082"
+    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-inventory:5432/inventory-db?serverTimezone=UTC
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+#      SPRING_DATASOURCE_USERNAME: userName
+#      SPRING_DATASOURCE_PASSWORD: secret
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+    depends_on:
+      - postgres-inventory
+      - discovery-service
+      - product-service
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     hostname: zookeeper
