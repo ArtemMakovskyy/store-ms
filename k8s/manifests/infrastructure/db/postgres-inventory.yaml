@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-inventory-service
+  template:
+    metadata:
+      labels:
+        app: postgres-inventory-service
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: inventory-db
+            - name: POSTGRES_USER
+              value: userName
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: postgres_user_password
+            - name: PGDATA
+              value: /data/postgres
+          volumeMounts:
+            - mountPath: /data/postgres
+              name: postgres-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-initdb-config
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+        - name: postgres-initdb-config
+          configMap:
+            name: postgres-initdb-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  labels:
+    app: postgres-inventory-service
+spec:
+  type: NodePort
+  selector:
+    app: postgres-inventory-service
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 32432  # порт в диапазоне 30000-32767
+      protocol: TCP
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secrets
+type: Opaque
+data:
+  postgres_user_password: c2VjcmV0  # base64 от "secret"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/postgres
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb-config
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS inventory (
+                                             id BIGSERIAL PRIMARY KEY,
+                                             sku_code VARCHAR(255),
+        quantity INTEGER
+        );
+

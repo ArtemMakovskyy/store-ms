@@ -18,11 +18,20 @@ spec:
           ports:
             - containerPort: 3306
           env:
+            - name: MYSQL_DATABASE
+              value: order-db
+            - name: MYSQL_USER
+              value: userName
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: mysql_root_password
                   name: mysql-secrets
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_user_password
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: mysql-data
@@ -43,17 +52,19 @@ metadata:
     app: mysql-order-service
   name: mysql-service
 spec:
+  type: NodePort
   ports:
     - port: 3306
       protocol: TCP
       targetPort: 3306
-      nodePort: 3307
+      nodePort: 32307
   selector:
     app: mysql-order-service
 ---
 apiVersion: v1
 data:
-  mysql_root_password: bXlzcWw=
+  mysql_root_password: c2VjcmV0
+  mysql_user_password: c2VjcmV0
 kind: Secret
 metadata:
   name: mysql-secrets
@@ -89,5 +100,4 @@ metadata:
   name: mysql-initdb-config
 data:
   initdb.sql: |
-    CREATE DATABASE IF NOT EXISTS order_service;
-    CREATE DATABASE IF NOT EXISTS inventory_service;
+    CREATE DATABASE IF NOT EXISTS order-db;
