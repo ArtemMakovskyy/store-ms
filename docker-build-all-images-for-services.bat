@@ -25,11 +25,6 @@ docker build ./discovery-service --tag=discovery-service:latest
 echo Start creating artemmakivskyy/discovery-service:latest
 docker tag discovery-service:latest artemmakivskyy/discovery-service:latest
 
-echo Start creating api-gateway:latest
-docker build ./api-gateway --tag=api-gateway:latest
-echo Start creating artemmakivskyy/api-gateway:latest
-docker tag api-gateway:latest artemmakivskyy/api-gateway:latest
-
 echo Start creating api-gateway-mvc:latest
 docker build ./api-gateway-mvc --tag=api-gateway-mvc:latest
 echo Start creating artemmakivskyy/api-gateway-mvc:latest

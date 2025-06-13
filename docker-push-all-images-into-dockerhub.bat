@@ -15,9 +15,6 @@ docker push artemmakivskyy/product-service:latest
 echo Start docker push artemmakivskyy/discovery-service:latest
 docker push artemmakivskyy/discovery-service:latest
 
-echo Start docker push artemmakivskyy/api-gateway:latest
-docker push artemmakivskyy/api-gateway:latest
-
 echo Start docker push artemmakivskyy/api-gateway-mvc:latest
 docker push artemmakivskyy/api-gateway-mvc:latest
 

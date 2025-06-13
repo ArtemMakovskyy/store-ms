@@ -14,13 +14,22 @@ spec:
     spec:
       containers:
         - name: inventory-service
-          image: saiupadhyayula007/new-inventory-service:latest
+          image: artemmakivskyy/inventory-service:latest
           env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery-service:8761/eureka/"
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                 configMapKeyRef:
                   key: SPRING_DATASOURCE_URL
                   name: inventory-service-config
+            - name: SPRING_DATASOURCE_USERNAME         # 👈 добавлено
+              value: userName
+            - name: SPRING_DATASOURCE_PASSWORD         # 👈 добавлено
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: postgres_user_password
             - name: LOKI_URL
               valueFrom:
                 configMapKeyRef:
@@ -49,4 +58,4 @@ kind: ConfigMap
 metadata:
   name: inventory-service-config
 data:
-  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.default.svc.cluster.local:3306/inventory_service"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-service.default.svc.cluster.local:5432/inventory-db"  # ✅ исправлено с mysql на postgresql

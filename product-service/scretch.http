@@ -11,3 +11,13 @@ Content-Type: application/json
   "description": "The Yamaha C70 guitar is the first step to learning this wonderful, complex and multifaceted instrument.",
   "price": 7300.00
 }
+
+### creating product
+POST http://localhost:50174/api/product
+Content-Type: application/json
+
+{
+  "name": "Classic guitar YAMAHA C70",
+  "description": "The Yamaha C70 guitar is the first step to learning this wonderful, complex and multifaceted instrument.",
+  "price": 7300.00
+}

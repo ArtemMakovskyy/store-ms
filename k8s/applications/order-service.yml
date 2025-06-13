@@ -14,8 +14,10 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: saiupadhyayula007/new-order-service:latest
+          image: artemmakivskyy/order-service:latest
           env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery-service:8761/eureka/"
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:
                 configMapKeyRef:
@@ -26,6 +28,13 @@ spec:
                 configMapKeyRef:
                   key: SPRING_DATASOURCE_URL
                   name: order-service-config
+            - name: SPRING_DATASOURCE_USERNAME  # 🛠 ДОБАВЛЕНО
+              value: userName
+            - name: SPRING_DATASOURCE_PASSWORD  # 🛠 ДОБАВЛЕНО
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_user_password
             - name: LOKI_URL
               valueFrom:
                 configMapKeyRef:
@@ -64,5 +73,5 @@ kind: ConfigMap
 metadata:
   name: order-service-config
 data:
-  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.default.svc.cluster.local:3306/order_service"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-service.default.svc.cluster.local:3306/order-db"  # 🛠 ИСПРАВЛЕНО (было mysql.default...)
   SPRING_KAFKA_PRODUCER_PROPERTIES_SCHEMA_REGISTRY_URL: "http://schema-registry.default.svc.cluster.local:8081"

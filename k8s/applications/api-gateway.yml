@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: saiupadhyayula007/new-api-gateway:latest
+          image: artemmakivskyy/api-gateway-mvc:latest
           ports:
             - containerPort: 9000
           env:
@@ -43,6 +43,8 @@ spec:
                 configMapKeyRef:
                   key: INVENTORY_SERVICE_URL
                   name: common-config
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery-service:8761/eureka/"
 ---
 apiVersion: v1
 kind: Service
