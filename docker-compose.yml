@@ -171,6 +171,17 @@ services:
       start_period: 10s
     restart: always
 
+  mysql-stream-db:
+    container_name: mysql-stream-db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: stream-db
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3308:3306"
+
   postgres-inventory:
     container_name: postgres-inventory-db
     image: postgres:17
