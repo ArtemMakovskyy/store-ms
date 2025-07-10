@@ -42,7 +42,7 @@ public class DataInitService {
             Customer customer = Customer.builder()
                     .fullName(faker.name().fullName())
                     .email(faker.internet().emailAddress())
-                    .registeredAt(randomDate(2022, 2024))
+                    .registeredAt(randomDate(2010, 2024))
                     .build();
             customers.add(customer);
         }
@@ -52,11 +52,11 @@ public class DataInitService {
     private List<CustomerOrder> generateOrdersForCustomers(List<Customer> customers) {
         List<CustomerOrder> orders = new ArrayList<>();
         for (Customer customer : customers) {
-            int ordersCount = random.nextInt(3) + 1;
+            int ordersCount = random.nextInt(10) + 1;
             for (int i = 0; i < ordersCount; i++) {
                 CustomerOrder order = CustomerOrder.builder()
                         .customer(customer)
-                        .orderDate(randomDate(2023, 2025))
+                        .orderDate(randomDate(2015, 2025))
                         .status(randomStatus())
                         .build();
                 orders.add(order);
