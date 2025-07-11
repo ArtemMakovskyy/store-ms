@@ -30,3 +30,4 @@
 /notification-service/.gitattributes
 /notification-service/.mvn/
 /stream-sql/.mvn/
+/.idea/

@@ -1,9 +1,9 @@
 package com.store.streamsql.service;
 
 import com.github.javafaker.Faker;
-import com.store.streamsql.model.Customer;
-import com.store.streamsql.model.CustomerOrder;
-import com.store.streamsql.model.OrderStatus;
+import com.store.streamsql.model.customer.Customer;
+import com.store.streamsql.model.customer.CustomerOrder;
+import com.store.streamsql.model.customer.OrderStatus;
 import com.store.streamsql.repository.CustomerOrderRepository;
 import com.store.streamsql.repository.CustomerRepository;
 import jakarta.annotation.PostConstruct;

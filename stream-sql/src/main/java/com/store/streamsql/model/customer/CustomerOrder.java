@@ -1,4 +1,4 @@
-package com.store.streamsql.model;
+package com.store.streamsql.model.customer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

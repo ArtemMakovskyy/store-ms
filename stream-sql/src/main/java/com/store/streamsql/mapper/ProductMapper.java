@@ -5,7 +5,7 @@ import com.store.streamsql.dto.ProductDto;
 import com.store.streamsql.dto.ProductRequestDto;
 import com.store.streamsql.dto.ProductResponseDto;
 import com.store.streamsql.dto.TagRequestDto;
-import com.store.streamsql.model.Product;
+import com.store.streamsql.model.product.Product;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

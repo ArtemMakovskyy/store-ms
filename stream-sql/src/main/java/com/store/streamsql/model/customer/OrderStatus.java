@@ -1,4 +1,4 @@
-package com.store.streamsql.model;
+package com.store.streamsql.model.customer;
 
 public enum OrderStatus {
     NEW,
