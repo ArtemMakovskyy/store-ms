@@ -19,13 +19,13 @@ public class StreamSqlApplication {
         ConfigurableApplicationContext context
                 = SpringApplication.run(StreamSqlApplication.class, args);
 
-        ProductService productService = context.getBean(ProductService.class);
-        productService.saveNewProductsIfDbIsEmpty();
-
-        Filter filterService = context.getBean(Filter.class);
-        filterService.start();
-
-        StreamOf streamOf = context.getBean(StreamOf.class);
-        streamOf.start();
+//        ProductService productService = context.getBean(ProductService.class);
+//        productService.saveNewProductsIfDbIsEmpty();
+//
+//        Filter filterService = context.getBean(Filter.class);
+//        filterService.start();
+//
+//        StreamOf streamOf = context.getBean(StreamOf.class);
+//        streamOf.start();
     }
 }
