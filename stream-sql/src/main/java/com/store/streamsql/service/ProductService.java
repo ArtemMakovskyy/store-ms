@@ -153,8 +153,7 @@ public class ProductService {
                 new ProductDto("Umbrella", "Accessories", 17.89, true, List.of("folding", "windproof"), LocalDate.of(2024, 8, 25)),
                 new ProductDto("Luggage", "Travel", 119.00, true, List.of("carry-on", "hard shell"), LocalDate.of(2023, 12, 28)),
                 new ProductDto("Travel Pillow", "Travel", 22.50, true, List.of("memory foam", "compact"), LocalDate.of(2024, 7, 1)),
-                new ProductDto("Passport Holder", "Travel", 9.49, true, List.of("leather", "rfid"), LocalDate.of(2025, 1, 1)),
-                new ProductDto()
+                new ProductDto("Passport Holder", "Travel", 9.49, true, List.of("leather", "rfid"), LocalDate.of(2025, 1, 1))
         );
     }
 }

@@ -14,7 +14,7 @@ public class Filter {
     private final ProductService productService;
 
     public void start() {
-        voidAllAnyMatch();
+//        voidAllAnyMatch();
 //        distinctFlatmap();
 //        maxMinPrice();
 //        filterInStock();
@@ -28,9 +28,9 @@ public class Filter {
         Util.line____________();
         List<String> filterTags = List.of("asian", "spicy");
 
-        productService.getProducts().stream()
-                .filter(dto -> dto.getTags().stream().anyMatch(filterTags::contains))
-                .forEach(System.out::println);
+//        productService.getProducts().stream()
+//                .filter(dto -> dto.getTags().stream().anyMatch(filterTags::contains))
+//                .forEach(System.out::println);
 
     }
 

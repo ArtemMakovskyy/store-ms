@@ -1,5 +1,6 @@
 package com.store.streamsql.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,10 +34,12 @@ public class UserProfile {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
+    @JsonManagedReference
     private Address address;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @JsonManagedReference
     private Department department;
 
     @ManyToMany
@@ -45,8 +48,10 @@ public class UserProfile {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
+    @JsonManagedReference
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "assignedUser", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 }

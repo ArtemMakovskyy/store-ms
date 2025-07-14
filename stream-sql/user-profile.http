@@ -1,0 +1,66 @@
+### CREATE new user
+POST http://localhost:8089/api/users
+Content-Type: application/json
+
+{
+  "username": "artem_user2",
+  "address": {
+    "city": "Kyiv",
+    "street": "Khreshchatyk 1"
+  },
+  "department": {
+    "id": 1
+  },
+  "projects": [
+    { "id": 1 },
+    { "id": 2 }
+  ],
+  "tasks": [
+    {
+      "description": "Complete integration test"
+    },
+    {
+      "description": "Fix Kafka config"
+    }
+  ]
+}
+
+###
+
+### GET all users
+GET http://localhost:8089/api/users
+
+###
+
+### GET user by ID
+GET http://localhost:8089/api/users/5
+
+###
+
+### UPDATE user by ID (замени id и тело на актуальные)
+PUT http://localhost:8089/api/users/1
+Content-Type: application/json
+
+{
+  "username": "updated_user",
+  "address": {
+    "city": "Lviv",
+    "street": "Shevchenko Ave 10"
+  },
+  "department": {
+    "id": 2
+  },
+  "projects": [
+    { "id": 3 }
+  ],
+  "tasks": [
+    {
+      "description": "Updated task #1"
+    }
+  ]
+}
+
+###
+
+### DELETE user by ID
+DELETE http://localhost:8089/api/users/3

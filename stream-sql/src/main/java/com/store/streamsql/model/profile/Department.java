@@ -1,5 +1,6 @@
 package com.store.streamsql.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,5 +31,6 @@ public class Department {
     @OneToMany(mappedBy = "department")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private List<UserProfile> members = new ArrayList<>();
 }
