@@ -3,27 +3,24 @@ POST http://localhost:8089/api/users
 Content-Type: application/json
 
 {
-  "username": "artem_user2",
+  "username": "artem",
   "address": {
     "city": "Kyiv",
-    "street": "Khreshchatyk 1"
+    "street": "Main St"
   },
   "department": {
-    "id": 1
+    "name": "Engineering"
   },
   "projects": [
-    { "id": 1 },
-    { "id": 2 }
+    { "title": "CRM System" },
+    { "title": "Internal Tools" }
   ],
   "tasks": [
-    {
-      "description": "Complete integration test"
-    },
-    {
-      "description": "Fix Kafka config"
-    }
+    { "description": "Design architecture" },
+    { "description": "Write tests" }
   ]
 }
+
 
 ###
 

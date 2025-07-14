@@ -1,4 +1,4 @@
-package com.store.streamsql.cintroller;
+package com.store.streamsql.controller;
 
 import com.store.streamsql.model.profile.UserProfile;
 import com.store.streamsql.service.UserProfilePopulateService;
@@ -23,7 +23,7 @@ public class UserProfileController {
 
     @PostMapping
     public ResponseEntity<UserProfile> create(@RequestBody UserProfile user) {
-        return ResponseEntity.ok(service.createUserProfile(user));
+        return ResponseEntity.ok(service.create(user));
     }
 
     @GetMapping

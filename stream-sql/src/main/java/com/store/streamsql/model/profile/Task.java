@@ -1,6 +1,7 @@
 package com.store.streamsql.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private UserProfile assignedUser;
 }

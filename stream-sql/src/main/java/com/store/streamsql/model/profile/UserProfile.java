@@ -37,12 +37,12 @@ public class UserProfile {
     @JsonManagedReference
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     @JsonManagedReference
     private Department department;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_project",
             joinColumns = @JoinColumn(name = "user_id"),

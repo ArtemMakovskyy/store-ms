@@ -35,7 +35,11 @@ public class UserProfilePopulateService {
         }
     }
 
-    public UserProfile createUserProfile(UserProfile userProfile) {
+    public UserProfile create(UserProfile userProfile) {
+        if (userProfile.getTasks() != null) {
+            userProfile.getTasks().forEach(task -> task.setAssignedUser(userProfile));
+        }
+
         return userProfileRepository.save(userProfile);
     }
 
