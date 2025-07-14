@@ -1,14 +1,17 @@
 package com.store.streamsql;
 
 import com.store.streamsql.service.ProductService;
+import com.store.streamsql.service.UserProfilePopulateService;
 import com.store.streamsql.stream.StreamOf;
 import com.store.streamsql.stream.filter.Filter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class StreamSqlApplication {
@@ -19,13 +22,19 @@ public class StreamSqlApplication {
         ConfigurableApplicationContext context
                 = SpringApplication.run(StreamSqlApplication.class, args);
 
-//        ProductService productService = context.getBean(ProductService.class);
-//        productService.saveNewProductsIfDbIsEmpty();
-//
-//        Filter filterService = context.getBean(Filter.class);
-//        filterService.start();
-//
-//        StreamOf streamOf = context.getBean(StreamOf.class);
-//        streamOf.start();
+        ProductService productService = context.getBean(ProductService.class);
+        productService.saveNewProductsIfDbIsEmpty();
+
+        Filter filterService = context.getBean(Filter.class);
+        filterService.start();
+
+        StreamOf streamOf = context.getBean(StreamOf.class);
+        streamOf.start();
+
+    }
+
+    @Bean
+    CommandLineRunner init(UserProfilePopulateService service) {
+        return args -> service.populate(100);
     }
 }

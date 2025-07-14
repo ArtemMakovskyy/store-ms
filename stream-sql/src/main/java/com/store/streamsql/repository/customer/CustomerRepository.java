@@ -1,4 +1,4 @@
-package com.store.streamsql.repository;
+package com.store.streamsql.repository.customer;
 
 import com.store.streamsql.model.customer.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;

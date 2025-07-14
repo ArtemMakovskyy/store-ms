@@ -1,4 +1,4 @@
-package com.store.streamsql.repository;
+package com.store.streamsql.repository.product;
 
 import com.store.streamsql.model.product.Tag;
 import java.util.Optional;
