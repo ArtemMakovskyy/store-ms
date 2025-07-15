@@ -1,0 +1,269 @@
+version: '3.9'
+services:
+  discovery-service:
+    image: artemmakivskyy/discovery-service:latest
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres-product
+      - postgres-inventory
+      - mysql-order
+
+  notification-service:
+    image: artemmakivskyy/notification-service:latest
+    container_name: notification-service
+    ports:
+      - "8084:8084"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_APPLICATION_NAME: notification-service-v2
+      MANAGEMENT_OBSERVATIONS_KEY_VALUES_APPLICATION: notification-service-v2
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:9092
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SCHEMA_REGISTRY_URL: http://schema-registry:8085
+    depends_on:
+      - discovery-service
+      - broker
+      - schema-registry
+
+  order-service:
+    image: artemmakivskyy/order-service:latest
+    container_name: order-service
+    ports:
+      - "8081:8081"
+    environment:
+      #      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-order:3306/order-db?serverTimezone=UTC
+      #      SPRING_DATASOURCE_USERNAME: userName
+      #      SPRING_DATASOURCE_PASSWORD: secret
+      #      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      - mysql-order
+      - discovery-service
+
+  product-service:
+    image: artemmakivskyy/product-service:latest
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-product:5432/product-db?serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: userName
+#      SPRING_DATASOURCE_PASSWORD: secret
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      - postgres-product
+      - discovery-service
+
+  inventory-service:
+    image: artemmakivskyy/inventory-service:latest
+    container_name: inventory-service
+    ports:
+      - "8082:8082"
+    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-inventory:5432/inventory-db?serverTimezone=UTC
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+#      SPRING_DATASOURCE_USERNAME: userName
+#      SPRING_DATASOURCE_PASSWORD: secret
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: none
+    depends_on:
+      - postgres-inventory
+      - discovery-service
+      - product-service
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.0
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - broker
+    ports:
+      - "8085:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8086:8080"
+    depends_on:
+      - broker
+#      - schema-registry
+    environment:
+      KAFKA_CLUSTERS_NAME: local
+      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: broker:29092
+#      KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
+
+  postgres-product:
+    container_name: postgres-product-db
+    image: postgres:17
+    environment:
+      POSTGRES_DB: product-db
+      POSTGRES_USER: userName
+      POSTGRES_PASSWORD: secret
+      PGDATA: /data/postgres
+    volumes:
+      - ./db/postgres-product:/data/postgres
+    ports:
+      - "5431:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U userName -d product-db" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  mysql-order:
+    container_name: mysql-order-db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: order-db
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+#      - ./mysql-order/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/mysql-order/data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  mysql-stream-db:
+    container_name: mysql-stream-db
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: stream-db
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3308:3306"
+
+  postgres-inventory:
+    container_name: postgres-inventory-db
+    image: postgres:17
+    environment:
+      POSTGRES_DB: inventory-db
+      POSTGRES_USER: userName
+      POSTGRES_PASSWORD: secret
+      PGDATA: /data/postgres
+    volumes:
+      - ./db/postgres-inventory:/data/postgres
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U userName -d inventory-db" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  mongodb:
+    image: mongo:7.0.5
+    container_name: mongo-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: userName
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: user-db
+    volumes:
+      - ./db/data:/data/db
+
+  loki:
+    image: grafana/loki:main
+    command: ['-config.file=/etc/loki/local-config.yaml']
+    ports:
+      - '3100:3100'
+
+  prometheus:
+    image: prom/prometheus:v2.46.0
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - '9090:9090'
+
+  tempo:
+    image: grafana/tempo:2.2.2
+    command: ['-config.file=/etc/tempo.yaml']
+    volumes:
+      - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
+      - ./docker/tempo/tempo-data:/tmp/tempo
+    ports:
+      - '3110:3100' # Tempo
+      - '9411:9411' # zipkin
+
+#  grafana:
+#    image: grafana/grafana:10.1.0
+#    volumes:
+#      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
+#    environment:
+#      - GF_AUTH_ANONYMOUS_ENABLED=true
+#      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+#      - GF_AUTH_DISABLE_LOGIN_FORM=true
+#    ports:
+#      - '3000:3000'
+
+  grafana:
+    image: grafana/grafana:10.1.0
+    volumes:
+      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - '3000:3000'
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+
