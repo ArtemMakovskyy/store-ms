@@ -1,5 +1,6 @@
 package com.store.streamsql;
 
+import com.store.streamsql.service.IzolationScenarioRunner;
 import com.store.streamsql.service.ProductService;
 import com.store.streamsql.service.UserProfilePopulateService;
 import com.store.streamsql.stream.StreamOf;
@@ -22,19 +23,23 @@ public class StreamSqlApplication {
         ConfigurableApplicationContext context
                 = SpringApplication.run(StreamSqlApplication.class, args);
 
-        ProductService productService = context.getBean(ProductService.class);
-        productService.saveNewProductsIfDbIsEmpty();
+//        ProductService productService = context.getBean(ProductService.class);
+//        productService.saveNewProductsIfDbIsEmpty();
+//
+//        Filter filterService = context.getBean(Filter.class);
+//        filterService.start();
+//
+//        StreamOf streamOf = context.getBean(StreamOf.class);
+//        streamOf.start();
 
-        Filter filterService = context.getBean(Filter.class);
-        filterService.start();
 
-        StreamOf streamOf = context.getBean(StreamOf.class);
-        streamOf.start();
+        IzolationScenarioRunner izolationScenarioRunner = context.getBean(IzolationScenarioRunner.class);
+        izolationScenarioRunner.runReadUncommittedDemo();
 
     }
 
-    @Bean
-    CommandLineRunner init(UserProfilePopulateService service) {
-        return args -> service.populate(100);
-    }
+//    @Bean
+//    CommandLineRunner init(UserProfilePopulateService service) {
+//        return args -> service.populate(100);
+//    }
 }

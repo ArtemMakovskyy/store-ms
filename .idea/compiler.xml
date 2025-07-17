@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway-mvc" />
+        <module name="transactions-demo" />
         <module name="inventory-service" />
         <module name="api-gateway" />
         <module name="product-service" />
@@ -45,6 +46,7 @@
       <module name="product-service" options="-parameters" />
       <module name="stream-sql" options="-parameters" />
       <module name="stream-sql (1)" options="-parameters" />
+      <module name="transactions-demo" options="-parameters" />
     </option>
   </component>
 </project>
