@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway-mvc" />
+        <module name="problem-hibernate" />
         <module name="transactions-demo" />
         <module name="inventory-service" />
         <module name="api-gateway" />
@@ -43,6 +44,7 @@
       <module name="inventory-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
+      <module name="problem-hibernate" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="stream-sql" options="-parameters" />
       <module name="stream-sql (1)" options="-parameters" />

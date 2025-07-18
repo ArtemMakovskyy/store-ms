@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/inventory-service/pom.xml" />
         <option value="$PROJECT_DIR$/stream-sql/pom.xml" />
         <option value="$PROJECT_DIR$/transactions-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/problem_hibernate/pom.xml" />
       </list>
     </option>
   </component>
