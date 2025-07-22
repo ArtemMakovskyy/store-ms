@@ -18,6 +18,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Data
@@ -52,6 +55,8 @@ public class UserProfile {
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "assignedUser", cascade = CascadeType.ALL)
+//    @BatchSize(size = 10)
+//    @Fetch(FetchMode.SUBSELECT)
     @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 }

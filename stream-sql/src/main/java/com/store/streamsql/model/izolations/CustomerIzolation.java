@@ -26,6 +26,7 @@ public class CustomerIzolation {
 
     private String name;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer",
+            cascade = CascadeType.ALL)
     private List<OrderIzolation> orders = new ArrayList<>();
 }
