@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/kafka/kafka-order-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/kafka/kafka-warehouse-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mutithreading" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/problem_hibernate" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/testcontainers-demo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/transactions-demo" vcs="Git" />
