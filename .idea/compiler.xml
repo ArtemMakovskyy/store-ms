@@ -35,6 +35,25 @@
         <module name="stream-sql (1)" />
         <module name="stream-sql" />
       </profile>
+      <profile name="Annotation profile for warehouse-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="order-service (1) (school.sorokin)" />
+        <module name="warehouse-service" />
+      </profile>
+      <profile name="Annotation profile for multithreading" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="multithreading" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -43,14 +62,17 @@
       <module name="api-gateway-mvc" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
+      <module name="multithreading" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
+      <module name="order-service (1) (school.sorokin)" options="-parameters" />
       <module name="problem-hibernate" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="stream-sql" options="-parameters" />
       <module name="stream-sql (1)" options="-parameters" />
       <module name="testcontainers-demo" options="-parameters" />
       <module name="transactions-demo" options="-parameters" />
+      <module name="warehouse-service" options="-parameters" />
     </option>
   </component>
 </project>

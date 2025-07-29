@@ -15,6 +15,9 @@
         <option value="$PROJECT_DIR$/transactions-demo/pom.xml" />
         <option value="$PROJECT_DIR$/problem_hibernate/pom.xml" />
         <option value="$PROJECT_DIR$/testcontainers-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/kafka/kafka-order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/kafka/kafka-warehouse-service/pom.xml" />
+        <option value="$PROJECT_DIR$/multithreading/pom.xml" />
       </list>
     </option>
   </component>

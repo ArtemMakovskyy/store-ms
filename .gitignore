@@ -31,3 +31,8 @@
 /notification-service/.mvn/
 /stream-sql/.mvn/
 /.idea/
+/multithreading/.idea/
+/multithreading/.mvn/
+/multithreading/.gitattributes
+/multithreading/mvnw
+/multithreading/mvnw.cmd
